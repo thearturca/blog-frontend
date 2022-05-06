@@ -20,7 +20,9 @@ function NewBlogPostFormComponent(props: NewBlogPostFormComponentProps)
     return (
         <>
         <form onSubmit={ onSubmit }>
-            <textarea onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewBlogPostState(e.target.value)} value={ newBlogPostState }></textarea>
+            <div>
+                <textarea onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewBlogPostState(e.target.value)} value={ newBlogPostState }></textarea>
+            </div>
             <input type="submit" value="submit"></input>
         </form>
         </>
