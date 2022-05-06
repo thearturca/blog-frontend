@@ -1,6 +1,6 @@
 import { ApiService } from "../api/api.service";
 import { BlogPostEntity, IBlogService } from "../ports/blog.ports";
-import { BlogPostDTO, IApiService, NewBlogPostDTO } from "../ports/IApiService";
+import { BlogPostDTO, IApiService, NewBlogPostDTO, UpdateBlogPostDTO } from "../ports/IApiService";
 
 export class BlogService implements IBlogService
 {
@@ -20,27 +20,33 @@ export class BlogService implements IBlogService
 
     async addBlogPost(body: string): Promise<BlogPostEntity | null> 
     {
+        if (body === "")
+        {
+            return null;
+        }
         const newBlogPostDto: NewBlogPostDTO = {body: body};
         const res: BlogPostDTO = await this._apiService.addBlogPost(newBlogPostDto);
         return new BlogPostEntity(res.ownerId, res.ownerUsername, res.timestamp, res.body, res.id);
     }
+
+    async updateBlogPost(blogPost: BlogPostEntity): Promise<BlogPostEntity | null>
+    {
+        if (blogPost.body === "")
+        {
+            return null;
+        }
+        const updateBlogPostDTO: UpdateBlogPostDTO = { blogPostid: blogPost.id, body: blogPost.body };
+        const res: BlogPostDTO = await this._apiService.updateBlogPost(updateBlogPostDTO);
+        return new BlogPostEntity(res.ownerId, res.ownerUsername, res.timestamp, res.body, res.id); 
+    }
+
+    async removeBlogPost(blogPost: BlogPostEntity): Promise<BlogPostEntity | null>
+    {
+        if (blogPost.body === "")
+        {
+            return null;
+        }
+        const res: BlogPostDTO = await this._apiService.removeBlogPost(blogPost.id);
+        return new BlogPostEntity(res.ownerId, res.ownerUsername, res.timestamp, res.body, res.id); 
+    }
 }
-
-
-
-// async addActivity(ownerWaterMeterId: number, meter: number, meters: WaterMetersActivityEntity[]): Promise<WaterMetersActivityEntity[] | null> 
-// {
-//     const waterMetersActivity: AddWaterMetersActivityEntity = 
-//     {
-//         ownerWaterMeterId: ownerWaterMeterId,
-//         meter: meter
-//     }
-//     const res: WaterMeterActivityResponse = await this._apiService.submitMeters(waterMetersActivity);
-//     if (!res.ownerWaterMeterId || !res.timestamp || !res.meter || !res.id)
-//     {
-//         return null;
-//     }
-//     const newMeter: WaterMetersActivityEntity = new WaterMetersActivityEntity(res.ownerWaterMeterId, new Date(res.timestamp), res.meter, res.id);
-//     const newMeters: WaterMetersActivityEntity[] = [...meters, newMeter];
-//     return newMeters;
-// }

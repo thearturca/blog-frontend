@@ -20,19 +20,52 @@ export const setBlogPosts = (blogPosts: BlogPostEntity[]) =>
     }
 }
 
-export const addBlogPost = (blogPostInArrayId: number, blogPost: BlogPostEntity) => 
+export const addBlogPost = (blogPost: BlogPostEntity) => 
 {
     return (dispatch: Dispatch) => 
     {
         const newBlogPost: BlogReducerAction = 
         { 
-            type: BlogReducerActionsEnums.setBlogPosts,
+            type: BlogReducerActionsEnums.addBlogPost,
             newBlogPostPayload:
+            {
+                blogPost: blogPost
+            }
+        }
+        dispatch(newBlogPost);
+    }
+}
+
+export const updateBlogPost = (blogPostInArrayId: number, blogPost: BlogPostEntity) =>
+{
+    return (dispatch: Dispatch) =>
+    {
+        const updateBlogPostAction: BlogReducerAction =
+        {
+            type: BlogReducerActionsEnums.updateBlogPost,
+            updateBlogPostPayload:
             {
                 id: blogPostInArrayId,
                 blogPost: blogPost
             }
         }
-        dispatch(newBlogPost);
+        dispatch(updateBlogPostAction);
+    }
+}
+
+export const removeBlogPost = (blogPostInArrayId: number, blogPost: BlogPostEntity) =>
+{
+    return (dispatch: Dispatch) =>
+    {
+        const updateBlogPostAction: BlogReducerAction =
+        {
+            type: BlogReducerActionsEnums.removeBlogPost,
+            updateBlogPostPayload:
+            {
+                id: blogPostInArrayId,
+                blogPost: blogPost
+            }
+        }
+        dispatch(updateBlogPostAction);
     }
 }

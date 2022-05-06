@@ -1,5 +1,5 @@
 import { NewUserEntity } from "../auth/new-user.entity";
-import { BlogPostDTO, IApiService, LoginResponse, NewBlogPostDTO, RegisterResponse } from "../ports/IApiService";
+import { BlogPostDTO, IApiService, LoginResponse, NewBlogPostDTO, RegisterResponse, UpdateBlogPostDTO } from "../ports/IApiService";
 import { ApiEndpoints, ApiMethods } from "../ports/api.enum";
 import { UserEntity } from "../auth/user.entity";
 import { IStorage } from "../ports/IStorage";
@@ -41,7 +41,17 @@ export class ApiService implements IApiService
         return await this.sendRequest<BlogPostDTO>(ApiEndpoints.blog, ApiMethods.POST, JSON.stringify(blogPost));
     }
 
-    async sendRequest<T>(urlEndpoint: ApiEndpoints, method: ApiMethods, body?: string): Promise<T> 
+    async updateBlogPost(blogPost: UpdateBlogPostDTO): Promise<BlogPostDTO> 
+    {
+        return await this.sendRequest<BlogPostDTO>(ApiEndpoints.blog+ `/${blogPost.blogPostid}`, ApiMethods.PUT, JSON.stringify(blogPost))
+    }
+    
+    async removeBlogPost(blogPostId: number): Promise<BlogPostDTO> 
+    {
+        return await this.sendRequest<BlogPostDTO>(ApiEndpoints.blog+ `/${blogPostId}`, ApiMethods.DELETE)
+    }
+
+    async sendRequest<T>(urlEndpoint: ApiEndpoints | string, method: ApiMethods, body?: string): Promise<T> 
     {
         let res;
         try 

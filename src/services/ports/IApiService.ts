@@ -1,6 +1,5 @@
 import { NewUserEntity } from "../auth/new-user.entity";
 import { UserEntity } from "../auth/user.entity";
-import { BlogPostEntity } from "./blog.ports";
 
 export interface LoginResponse 
 {
@@ -32,11 +31,19 @@ export interface NewBlogPostDTO
     body: string,
 }
 
+export interface UpdateBlogPostDTO
+{
+    readonly body: string;
+    readonly blogPostid: number;
+}
+
 export interface IApiService 
 {
     login(username: string, password: string): Promise<LoginResponse>
     register(newUser: NewUserEntity): Promise<RegisterResponse>
     checkToken(): Promise<UserEntity | null>
     loadBlog(): Promise<BlogPostDTO[]>
-    addBlogPost(blogPost: NewBlogPostDTO): Promise<BlogPostDTO>
+    addBlogPost(blogPost: NewBlogPostDTO): Promise<BlogPostDTO>,
+    updateBlogPost(blogPost: UpdateBlogPostDTO): Promise<BlogPostDTO>
+    removeBlogPost(blogPostId: number): Promise<BlogPostDTO>
 }

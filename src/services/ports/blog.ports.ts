@@ -29,5 +29,7 @@ export interface AddBlogPostEntity {
 
 export interface IBlogService {
     addBlogPost(body: string): Promise<BlogPostEntity | null>,
-    loadBlog(): Promise<BlogPostEntity[]>
+    loadBlog(): Promise<BlogPostEntity[]>,
+    updateBlogPost(blogPost: BlogPostEntity): Promise<BlogPostEntity | null>,
+    removeBlogPost(blogPost: BlogPostEntity): Promise<BlogPostEntity | null>
 }

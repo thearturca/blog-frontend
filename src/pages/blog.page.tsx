@@ -1,7 +1,9 @@
 import { bindActionCreators } from "@reduxjs/toolkit"
-import React, { SyntheticEvent, useEffect, useState } from "react"
+import { useEffect } from "react"
 import BlogPostsListComponent from "../components/blog-posts-list.component"
+import NewBlogPostFormComponent from "../components/new-blog-post.form.component/new-blog-post.form.component"
 import { useAppDispatch, useAppSelector } from "../hooks/hooks"
+import { useAuth } from "../hooks/useAuth"
 import { BlogService } from "../services/blog/blog.service"
 import { BlogPostEntity, IBlogService } from "../services/ports/blog.ports"
 import { blogActionCreators } from "../state/actions-creators"
@@ -11,18 +13,42 @@ function BlogPage()
   const { blogPosts, isLoaded } = useAppSelector((store) => store.blogPosts);
   const dispatch = useAppDispatch();
   const actions = bindActionCreators(blogActionCreators, dispatch);
+  const { isAuth } = useAuth();
+
   const blogService: IBlogService = new BlogService();
 
-  const [newBlogPostState, setNewBlogPostState] = useState<string>("");
 
-  const handleNewPost = async (body: string) =>
+  const handleNewPost = async (body: string): Promise<void> =>
   {
-    const res = await blogService.addBlogPost(body);
+    const res = await blogService.addBlogPost(body.trim());
     if (res === null)
     {
-      return null;
+      return;
     }
-    actions.addBlogPost(0, res)
+    actions.addBlogPost(res);
+    return;
+  }
+
+  const handleUpdatePost = async (blogPost: BlogPostEntity, blogPostInArrayId: number): Promise<void> =>
+  {
+    const res = await blogService.updateBlogPost(blogPost);
+    if (res === null)
+    {
+      return;
+    }
+    actions.updateBlogPost(blogPostInArrayId, res);
+    return;
+  }
+
+  const handleRemovePost = async (blogPost: BlogPostEntity, blogPostInArrayId: number): Promise<void> =>
+  {
+    const res = await blogService.removeBlogPost(blogPost);
+    if (res === null)
+    {
+      return;
+    }
+    actions.removeBlogPost(blogPostInArrayId, res);
+    return;
   }
 
   useEffect(() => 
@@ -33,15 +59,14 @@ function BlogPage()
       actions.setBlogPosts(fetchedBlogPosts);
     };
     loadBlog()
-  }, []);
+  }, [isAuth]);
 
   return (
     <>
-    <form onSubmit={() => handleNewPost(newBlogPostState)}>
-      <textarea onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewBlogPostState(e.target.value)}></textarea>
-      <input type="submit" value="submit"></input>
-    </form>
-    <BlogPostsListComponent blogPosts={blogPosts}></BlogPostsListComponent>
+      {isAuth && <h2>New Post</h2>}
+    {isAuth && <NewBlogPostFormComponent handleNewPost={ handleNewPost }/>}
+    <h2>Blog</h2>
+    <BlogPostsListComponent handleRemovePost={handleRemovePost} handleUpdatePost={ handleUpdatePost } blogPosts={ blogPosts } ></BlogPostsListComponent>
     </>
     )
 }
