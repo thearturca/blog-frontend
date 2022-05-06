@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom"
+import { Link, Outlet } from "react-router-dom"
 import HeaderComponent from "../header.component/header.component"
 
 
@@ -10,6 +10,9 @@ function LayoutComponent() {
         <main>
             <Outlet />
         </main>
+        <footer>
+            <Link to="/docs" target="_blank" rel="noopener noreferrer" >Swagger documentation</Link>
+        </footer>
         </>
     )
 }

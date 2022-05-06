@@ -9,7 +9,7 @@ export class ApiService implements IApiService
 {
     private _token: string | null = null;
     private readonly _storage: IStorage = new StorageService();
-    private readonly _url: string = process.env.REACT_APP_API_HOST ? `${process.env.REACT_APP_API_HOST}/api/` : "http://localhost:3000/api/";
+    private readonly _url: string = process.env.REACT_APP_API_HOST ? `${process.env.REACT_APP_API_HOST}/api/` : "/api/";
     
     constructor() 
     {
