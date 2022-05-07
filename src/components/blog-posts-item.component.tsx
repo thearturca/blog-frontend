@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useAuth } from "../hooks/useAuth"
 import { BlogPostEntity } from "../services/ports/blog.ports"
 import NewBlogPostFormComponent from "./new-blog-post.form.component/new-blog-post.form.component";
+import "./blog-posts-item.css"
 
 interface BlogPostsItemComponentProps
 {
@@ -29,13 +30,16 @@ function BlogPostsItemComponent(props: BlogPostsItemComponentProps)
 
   const { user } = useAuth();
   return (
-    <div>
-      <h3>{ props.blogPost.ownerUsername }</h3>
-      { !isUpdate && props.blogPost.body }
+    <div className="post">
+      <p>{ !isUpdate && props.blogPost.body }</p>
       { isUpdate && <NewBlogPostFormComponent handleNewPost={handleFormSubmit} bodyStartText={props.blogPost.body} /> }
-      <div>{ props.blogPost.timestamp.toString() }</div>
-      {props.blogPost.ownerId === user.id && <button onClick={ () => setIsUpdate(!isUpdate) }>{isUpdate ? "Отмена" : "Изменить"}</button>}
-      {props.blogPost.ownerId === user.id && !isUpdate && <button onClick={handleRemoveBlogPost}>Удалить</button>}
+      
+      <div>
+        <span className="author">{ props.blogPost.ownerUsername }</span>
+        { new Date(props.blogPost.timestamp).toLocaleDateString() }
+      </div>
+      {props.blogPost.ownerId === user.id && <button onClick={ () => setIsUpdate(!isUpdate) } className="btn">{isUpdate ? "Отмена" : "Изменить"}</button>}
+      {props.blogPost.ownerId === user.id && !isUpdate && <button onClick={handleRemoveBlogPost} className="btn">Удалить</button>}
     </div>
   )
 }

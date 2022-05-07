@@ -10,7 +10,7 @@ import { blogActionCreators } from "../state/actions-creators"
 
 function BlogPage() 
 {
-  const { blogPosts, isLoaded } = useAppSelector((store) => store.blogPosts);
+  const { blogPosts } = useAppSelector((store) => store.blogPosts);
   const dispatch = useAppDispatch();
   const actions = bindActionCreators(blogActionCreators, dispatch);
   const { isAuth } = useAuth();
@@ -62,12 +62,12 @@ function BlogPage()
   }, [isAuth]);
 
   return (
-    <>
+    <div className="container">
       {isAuth && <h2>New Post</h2>}
     {isAuth && <NewBlogPostFormComponent handleNewPost={ handleNewPost }/>}
-    <h2>Blog</h2>
+    <h2 style={{marginTop: "28px"}}>Blog</h2>
     <BlogPostsListComponent handleRemovePost={handleRemovePost} handleUpdatePost={ handleUpdatePost } blogPosts={ blogPosts } ></BlogPostsListComponent>
-    </>
+    </div>
     )
 }
 

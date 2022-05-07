@@ -33,11 +33,11 @@ function RegisterPage() {
       }, [isAuth]);
 
     return (
-        <>
+        <div className="container">
             <h2>Sign up</h2>
             <RegisterFormComponent register={ handelRegister }/>
             <Link to='/auth'>Sign in</Link>
-        </>
+        </div>
     )
 }
 

@@ -19,19 +19,19 @@ function RegisterFormComponent(props: RegisterFormComponentProps) {
     return (
         <>
         <form onSubmit={ onSubmit }>
-            <div>
+            <div className="input">
                 <label htmlFor="accountId">Username</label>
                 <input type="text" name="accountId" id="accountId" required value={ accountId } onChange={ (e:React.ChangeEvent<HTMLInputElement>) => setAccountId(e.target.value) }/>
             </div>
-            <div>
+            <div className="input">
                 <label htmlFor="userSecret">Password</label>
                 <input type="password" name="userSecret" id="userSecret" required value={ userSecret } onChange={ (e:React.ChangeEvent<HTMLInputElement>) => setUserSecret(e.target.value) }/>
             </div>
-            <div>
+            <div className="input">
                 <label htmlFor="fullName">Full name</label>
                 <input type="text" name="fullName" id="fullName" required value={ fullName } onChange={ (e:React.ChangeEvent<HTMLInputElement>) => setFullName(e.target.value) }/>
             </div>
-            <input type="submit" value="Sign up" />
+            <input type="submit" value="Sign up" className="btn" />
         </form>
         </>
     )

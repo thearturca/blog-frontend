@@ -1,5 +1,6 @@
 import { Link, Outlet } from "react-router-dom"
 import HeaderComponent from "../header.component/header.component"
+import "./layout.component.css"
 
 
 function LayoutComponent() {

@@ -1,0 +1,51 @@
+.author
+{
+    font-weight: 700;
+    font-size: 18px;
+    margin-right: 12px;
+}
+
+p
+{
+    font-size: 22px;
+}
+
+.post
+{
+    border: 1px solid #cccccc;
+    padding: 20px;
+    border-radius: 6px;
+    min-width: 600px;
+    margin-bottom: 16px;
+}
+
+textarea
+{
+    font-size: 22px;
+    padding: 20px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+}
+
+.new-post textarea
+{
+    min-width: 500px;
+}
+
+.new-post .btn
+{
+    font-size: 16px;
+    padding: 8px 16px;
+    width: 120px;
+    height: 36px;
+}
+
+.post .btn
+{
+    font-size: 16px;
+    padding: 8px 16px;
+    width: 120px;
+    height: 36px;
+    margin-right: 12px;
+    margin-top: 12px;
+}

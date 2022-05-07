@@ -37,11 +37,11 @@ function AuthPage()
   }, [isAuth]);
   
   return (
-      <>
+      <div className="container">
         <h2>Sign in</h2>
         <LoginFormComponent login={ handleLogin }/>
         <Link to="register">Sign up</Link>
-      </>
+      </div>
   )
 }
 
