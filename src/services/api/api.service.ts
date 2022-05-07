@@ -1,10 +1,9 @@
 import { NewUserEntity } from "../auth/new-user.entity";
-import { BlogPostDTO, IApiService, LoginResponse, NewBlogPostDTO, RegisterResponse, UpdateBlogPostDTO } from "../ports/IApiService";
+import { BlogPostDTO, FileEntityDTO, IApiService, LoginResponse, NewBlogPostDTO, RegisterResponse, UpdateBlogPostDTO } from "../ports/IApiService";
 import { ApiEndpoints, ApiMethods } from "../ports/api.enum";
 import { UserEntity } from "../auth/user.entity";
 import { IStorage } from "../ports/IStorage";
 import { StorageService } from "../storage/storage.service";
-import { FileEntity } from "../ports/blog.ports";
 
 export class ApiService implements IApiService 
 {
@@ -52,9 +51,9 @@ export class ApiService implements IApiService
         return await this.sendRequest<BlogPostDTO>(ApiEndpoints.blog+ `/${blogPostId}`, ApiMethods.DELETE)
     }
     
-    async uploadFile(formData: FormData, postId: number): Promise<FileEntity> 
+    async uploadFile(formData: FormData, postId: number): Promise<FileEntityDTO> 
     {
-        return await this.sendFile<FileEntity>(ApiEndpoints.blog+`/upload?postId=${postId}`, ApiMethods.POST, formData)    
+        return await this.sendFile<FileEntityDTO>(ApiEndpoints.blog+`/upload?postId=${postId}`, ApiMethods.POST, formData)    
     }
 
     async sendRequest<T>(urlEndpoint: ApiEndpoints | string, method: ApiMethods, body?: string): Promise<T> 

@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { useAuth } from "../hooks/useAuth"
 import { BlogPostEntity, FileEntity, fileTypes } from "../services/ports/blog.ports"
-import NewBlogPostFormComponent from "./new-blog-post.form.component/new-blog-post.form.component";
 import "./blog-posts-item.css"
+import UpdateBlogPostFormComponent from "./update-blog-post.form.component/update-blog-post.form.component";
 
 interface BlogPostsItemComponentProps
 {
@@ -32,13 +32,13 @@ function BlogPostsItemComponent(props: BlogPostsItemComponentProps)
   return (
     <div className="post">
       <p>{ !isUpdate && props.blogPost.body }</p>
-      { isUpdate && <NewBlogPostFormComponent handleNewPost={handleFormSubmit} bodyStartText={props.blogPost.body} /> }
-      {props.blogPost.files !== null && props.blogPost.files.map((file: FileEntity) =>
+      { isUpdate && <UpdateBlogPostFormComponent handleUpdatePost={handleFormSubmit} bodyStartText={props.blogPost.body} /> }
+      {props.blogPost.files && props.blogPost.files.map((file: FileEntity) =>
       {
         switch(file.type)
         {
           case fileTypes.img:
-            return <img src={file.path} style={{maxWidth: "400px"}}></img>
+            return <img src={file.path} style={{maxWidth: "400px"}} alt="Failed to Load image"></img>
           case fileTypes.video:
             return <video controls src={file.path} style={{maxWidth: "400px"}}></video>
         }

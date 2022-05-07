@@ -1,6 +1,6 @@
 import { NewUserEntity } from "../auth/new-user.entity";
 import { UserEntity } from "../auth/user.entity";
-import { FileEntity } from "./blog.ports";
+import { FileEntity, fileTypes } from "./blog.ports";
 
 export interface LoginResponse 
 {
@@ -39,6 +39,14 @@ export interface UpdateBlogPostDTO
     readonly blogPostid: number;
 }
 
+export interface FileEntityDTO
+{
+    message?: string
+    type: fileTypes,
+    path: string
+    fileId?: number,
+}
+
 export interface IApiService 
 {
     login(username: string, password: string): Promise<LoginResponse>
@@ -48,5 +56,5 @@ export interface IApiService
     addBlogPost(blogPost: NewBlogPostDTO): Promise<BlogPostDTO>,
     updateBlogPost(blogPost: UpdateBlogPostDTO): Promise<BlogPostDTO>
     removeBlogPost(blogPostId: number): Promise<BlogPostDTO>
-    uploadFile(formData: FormData, postId: number): Promise<FileEntity>
+    uploadFile(formData: FormData, postId: number): Promise<FileEntityDTO>
 }

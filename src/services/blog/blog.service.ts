@@ -1,6 +1,6 @@
 import { ApiService } from "../api/api.service";
-import { BlogPostEntity, FileEntity, IBlogService } from "../ports/blog.ports";
-import { BlogPostDTO, IApiService, NewBlogPostDTO, UpdateBlogPostDTO } from "../ports/IApiService";
+import { BlogPostEntity, IBlogService } from "../ports/blog.ports";
+import { BlogPostDTO, FileEntityDTO, IApiService, NewBlogPostDTO, UpdateBlogPostDTO } from "../ports/IApiService";
 
 export class BlogService implements IBlogService
 {
@@ -26,9 +26,17 @@ export class BlogService implements IBlogService
         }
         const newBlogPostDto: NewBlogPostDTO = {body: body};
         const res: BlogPostDTO = await this._apiService.addBlogPost(newBlogPostDto);
-        let uploadedFile: FileEntity | null = null;
+        let uploadedFile: FileEntityDTO;
+        if (formData.has("file"))
+        {
             uploadedFile = await this._apiService.uploadFile(formData, res.id);
-        return new BlogPostEntity(res.ownerId, res.ownerUsername, res.timestamp, res.body, res.id, [uploadedFile!] || []);
+            if(!uploadedFile.path )
+            {
+                alert(uploadedFile.message)
+            }
+            return new BlogPostEntity(res.ownerId, res.ownerUsername, res.timestamp, res.body, res.id, [uploadedFile]);
+        }
+        return new BlogPostEntity(res.ownerId, res.ownerUsername, res.timestamp, res.body, res.id, []);
     }
 
     async updateBlogPost(blogPost: BlogPostEntity): Promise<BlogPostEntity | null>
