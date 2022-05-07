@@ -4,6 +4,7 @@ import { ApiEndpoints, ApiMethods } from "../ports/api.enum";
 import { UserEntity } from "../auth/user.entity";
 import { IStorage } from "../ports/IStorage";
 import { StorageService } from "../storage/storage.service";
+import { FileEntity } from "../ports/blog.ports";
 
 export class ApiService implements IApiService 
 {
@@ -50,6 +51,11 @@ export class ApiService implements IApiService
     {
         return await this.sendRequest<BlogPostDTO>(ApiEndpoints.blog+ `/${blogPostId}`, ApiMethods.DELETE)
     }
+    
+    async uploadFile(formData: FormData, postId: number): Promise<FileEntity> 
+    {
+        return await this.sendFile<FileEntity>(ApiEndpoints.blog+`/upload?postId=${postId}`, ApiMethods.POST, formData)    
+    }
 
     async sendRequest<T>(urlEndpoint: ApiEndpoints | string, method: ApiMethods, body?: string): Promise<T> 
     {
@@ -64,6 +70,28 @@ export class ApiService implements IApiService
                     'Authorization': 'Bearer ' + this._token, 
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
+                },
+                body: body
+            });
+            res = await rawRes.json();
+        } 
+        catch (e) 
+        {
+        }
+        return res as Promise<T>;
+    }
+
+    async sendFile<T>(urlEndpoint: ApiEndpoints | string, method: ApiMethods, body?: any): Promise<T> 
+    {
+        let res;
+        try 
+        {
+            const rawRes: Response = await fetch(this._url + urlEndpoint, 
+                {
+                method: method,
+                headers: 
+                {
+                    'Authorization': 'Bearer ' + this._token, 
                 },
                 body: body
             });

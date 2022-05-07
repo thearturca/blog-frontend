@@ -18,9 +18,9 @@ function BlogPage()
   const blogService: IBlogService = new BlogService();
 
 
-  const handleNewPost = async (body: string): Promise<void> =>
+  const handleNewPost = async (body: string, formData: FormData): Promise<void> =>
   {
-    const res = await blogService.addBlogPost(body.trim());
+    const res = await blogService.addBlogPost(body.trim(), formData);
     if (res === null)
     {
       return;

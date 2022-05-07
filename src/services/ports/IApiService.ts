@@ -1,5 +1,6 @@
 import { NewUserEntity } from "../auth/new-user.entity";
 import { UserEntity } from "../auth/user.entity";
+import { FileEntity } from "./blog.ports";
 
 export interface LoginResponse 
 {
@@ -24,6 +25,7 @@ export interface BlogPostDTO
     ownerUsername: string,
     body: string,
     timestamp: Date,
+    files: FileEntity[]
 }
 
 export interface NewBlogPostDTO
@@ -46,4 +48,5 @@ export interface IApiService
     addBlogPost(blogPost: NewBlogPostDTO): Promise<BlogPostDTO>,
     updateBlogPost(blogPost: UpdateBlogPostDTO): Promise<BlogPostDTO>
     removeBlogPost(blogPostId: number): Promise<BlogPostDTO>
+    uploadFile(formData: FormData, postId: number): Promise<FileEntity>
 }

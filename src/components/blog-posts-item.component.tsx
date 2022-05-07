@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useAuth } from "../hooks/useAuth"
-import { BlogPostEntity } from "../services/ports/blog.ports"
+import { BlogPostEntity, FileEntity, fileTypes } from "../services/ports/blog.ports"
 import NewBlogPostFormComponent from "./new-blog-post.form.component/new-blog-post.form.component";
 import "./blog-posts-item.css"
 
@@ -8,7 +8,7 @@ interface BlogPostsItemComponentProps
 {
     blogInArrayId: number,
     blogPost: BlogPostEntity,
-    handleUpdatePost(blogPost: BlogPostEntity, blogPostInArrayId: number): Promise<void>
+    handleUpdatePost(blogPost: BlogPostEntity, blogPostInArrayId: number,): Promise<void>
     handleRemovePost(blogPost: BlogPostEntity, blogPostInArrayId: number): Promise<void>
 }
 
@@ -18,7 +18,7 @@ function BlogPostsItemComponent(props: BlogPostsItemComponentProps)
 
   const handleFormSubmit = async (body: string) =>
   {
-    const updateBlogPost: BlogPostEntity = new BlogPostEntity(props.blogPost.ownerId, props.blogPost.ownerUsername, props.blogPost.timestamp, body, props.blogPost.id);
+    const updateBlogPost: BlogPostEntity = new BlogPostEntity(props.blogPost.ownerId, props.blogPost.ownerUsername, props.blogPost.timestamp, body, props.blogPost.id, props.blogPost.files);
     await props.handleUpdatePost(updateBlogPost, props.blogInArrayId);
     setIsUpdate(false);
   }
@@ -33,7 +33,16 @@ function BlogPostsItemComponent(props: BlogPostsItemComponentProps)
     <div className="post">
       <p>{ !isUpdate && props.blogPost.body }</p>
       { isUpdate && <NewBlogPostFormComponent handleNewPost={handleFormSubmit} bodyStartText={props.blogPost.body} /> }
-      
+      {props.blogPost.files !== null && props.blogPost.files.map((file: FileEntity) =>
+      {
+        switch(file.type)
+        {
+          case fileTypes.img:
+            return <img src={file.path} style={{maxWidth: "400px"}}></img>
+          case fileTypes.video:
+            return <video controls src={file.path} style={{maxWidth: "400px"}}></video>
+        }
+      })}
       <div>
         <span className="author">{ props.blogPost.ownerUsername }</span>
         { new Date(props.blogPost.timestamp).toLocaleDateString() }
